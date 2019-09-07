@@ -25,6 +25,8 @@ https://acd37-chorechart.herokuapp.com
 * Twitter: @acdown87
 * LinkedIn: https://www.linkedin.com/in/alecdown/
 
+
+#### Developer/Full-stack Web Software Developer
 * Name: Terrence Mahnken (@TerrenceMM2)
 * Homepage: 
 * e-mail: terrencemm2@gmail.com
