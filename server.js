@@ -26,7 +26,7 @@ require('./config/passport')(passport);
 // require('./routes/api/auth')(app);
 
 // Models
-const db = require('./models');
+const db = require("./models");
 
 db.sequelize.sync().then(() => {
     // server static assets if in production
