@@ -1,7 +1,7 @@
 const morgan = require('morgan');
 const chalk = require('chalk');
 
-const morganConfig = morgan(function (tokens, req, res) {
+const morganConfig = morgan(function(tokens, req, res) {
     return [
         chalk.green.bold(tokens.method(req, res)),
         chalk.red.bold(tokens.status(req, res)),

@@ -1,4 +1,4 @@
-module.exports = function (sequelize, Sequelize) {
+module.exports = function(sequelize, Sequelize) {
     const Family = sequelize.define('family', {
         id: {
             type: Sequelize.UUID,
@@ -15,7 +15,7 @@ module.exports = function (sequelize, Sequelize) {
         }
     });
 
-    Family.associate = function (models) {
+    Family.associate = function(models) {
         Family.hasMany(models.user, {
             onDelete: 'cascade'
         });

@@ -1,4 +1,4 @@
-module.exports = function (sequelize, Sequelize) {
+module.exports = function(sequelize, Sequelize) {
     const Chore = sequelize.define('chore', {
         id: {
             type: Sequelize.UUID,
@@ -19,7 +19,7 @@ module.exports = function (sequelize, Sequelize) {
         }
     });
 
-    Chore.associate = function (models) {
+    Chore.associate = function(models) {
         Chore.belongsTo(models.family, {
             foreignKey: {
                 allowNull: false

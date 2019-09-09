@@ -1,4 +1,4 @@
-module.exports = function (sequelize, Sequelize) {
+module.exports = function(sequelize, Sequelize) {
     const User = sequelize.define('user', {
         id: {
             type: Sequelize.UUID,
@@ -7,11 +7,11 @@ module.exports = function (sequelize, Sequelize) {
         },
         firstName: {
             type: Sequelize.STRING,
-            allowNull: false,
+            allowNull: false
         },
         lastName: {
             type: Sequelize.STRING,
-            allowNull: false,
+            allowNull: false
         },
         email: {
             type: Sequelize.STRING,
@@ -23,7 +23,7 @@ module.exports = function (sequelize, Sequelize) {
         }
     });
 
-    User.associate = function (models) {
+    User.associate = function(models) {
         User.belongsTo(models.family, {
             foreignKey: {
                 allowNull: false

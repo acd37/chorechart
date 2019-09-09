@@ -1,7 +1,7 @@
 {
   "name": "chorechart",
   "version": "1.0.0",
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "client-install": "npm install --prefix client",
@@ -28,5 +28,14 @@
     "passport-jwt": "^4.0.0",
     "prettier": "^1.18.2",
     "sequelize": "^5.18.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acd37/chorechart.git"
+  },
+  "bugs": {
+    "url": "https://github.com/acd37/chorechart/issues"
+  },
+  "homepage": "https://github.com/acd37/chorechart#readme"
 }
