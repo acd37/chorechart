@@ -28,9 +28,7 @@ https://acd37-chorechart.herokuapp.com
 
 #### Developer/Full-stack Web Software Developer
 * Name: Terrence Mahnken (@TerrenceMM2)
-* Homepage: 
+* Homepage: [terrencemm2.github.io](https://terrencemm2.github.io/)
 * e-mail: terrencemm2@gmail.com
-* Twitter: 
-* LinkedIn: 
-
-
+* Twitter: @TerrenceMahnken
+* LinkedIn: https://www.linkedin.com/in/terrencemahnken/
