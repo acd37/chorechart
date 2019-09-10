@@ -1,6 +1,5 @@
 const express = require('express');
 require('dotenv').config();
-const bodyParser = require('body-parser');
 const passport = require('passport');
 const chalk = require('chalk');
 const { morganConfig } = require('./config/morganConfig');
@@ -9,8 +8,8 @@ const app = express();
 const path = require('path');
 
 // Bodyparser
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Morgan
 app.use(morganConfig);
@@ -22,8 +21,10 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 
 // Routes
-// require('./routes/api/users')(app);
-// require('./routes/api/auth')(app);
+require('./routes/api/user')(app);
+require('./routes/api/auth')(app);
+require('./routes/api/chore')(app);
+require('./routes/api/family')(app);
 
 // Models
 const db = require("./models");
