@@ -61,7 +61,7 @@ module.exports = function(app) {
 			}
 		}).then(() => {
 			res.status(200).json({
-				message: "User account successfully deleted",
+				message: "User account successfully deleted.",
 				userDeleted: true
 			});
 		}).catch((err) => {
@@ -72,18 +72,28 @@ module.exports = function(app) {
 	// @route PUT api/users/
 	// @desc updates a user
 	app.put('/api/users/:id', (req, res) => {
-		// db.user.destroy({
-		// 	where: {
-		// 		id: req.params.id
-		// 	}
-		// }).then(() => {
-		// 	res.status(200).json({
-		// 		message: "User account successfully deleted",
-		// 		userDeleted: true
-		// 	});
-		// }).catch((err) => {
-		// 	res.status(500).json(err);
-		// });
+		db.user.update(
+			{
+				firstName: req.body.firstName,
+				lastName: req.body.lastName,
+				email: req.body.email,
+			},
+			{
+				where: {
+				  id: req.params.id
+				}
+			}
+		).then((data) => {
+			res.status(200).json({
+				firstName: data.firstName,
+				lastName: data.lastName,
+				email: data.email,
+				message: "User account successfully updated.",
+				userUpdated: true
+			});
+		}).catch((err) => {
+			res.status(500).json(err);
+		});
 	});
 
 }
