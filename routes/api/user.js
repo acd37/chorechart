@@ -52,6 +52,8 @@ module.exports = function(app) {
 			});
 	});
 
+	// @route DELETE api/users/
+	// @desc deletes a user
 	app.delete('/api/users/:id', (req, res) => {
 		db.user.destroy({
 			where: {
@@ -65,6 +67,23 @@ module.exports = function(app) {
 		}).catch((err) => {
 			res.status(500).json(err);
 		});
+	});
+
+	// @route PUT api/users/
+	// @desc updates a user
+	app.put('/api/users/:id', (req, res) => {
+		// db.user.destroy({
+		// 	where: {
+		// 		id: req.params.id
+		// 	}
+		// }).then(() => {
+		// 	res.status(200).json({
+		// 		message: "User account successfully deleted",
+		// 		userDeleted: true
+		// 	});
+		// }).catch((err) => {
+		// 	res.status(500).json(err);
+		// });
 	});
 
 }
