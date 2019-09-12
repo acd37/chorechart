@@ -27,7 +27,7 @@ require('./routes/api/chore')(app);
 require('./routes/api/family')(app);
 
 // Models
-const db = require('./models');
+const db = require("./models");
 
 db.sequelize.sync().then(() => {
     // server static assets if in production
