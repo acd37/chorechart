@@ -69,7 +69,7 @@ module.exports = function(app) {
 		});
 	});
 
-	// @route PUT api/users/
+	// @route PUT api/users/:id
 	// @desc updates a user
 	app.put('/api/users/:id', (req, res) => {
 		db.user.update(
