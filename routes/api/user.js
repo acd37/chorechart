@@ -1,18 +1,18 @@
-module.exports = function(app) {
-    const bcrypt = require('bcryptjs');
-    const db = require('../../models');
-    const passport = require('passport');
+module.exports = function (app) {
+	const bcrypt = require('bcryptjs');
+	const db = require('../../models');
+	const passport = require('passport');
 
-    // @route GET api/users/test
-    // @desc tests the users api route
-    app.get('/api/user/test', (req, res) => {
-        res.json({
-            success: true,
-            msg: 'Testing endpoint works correctly.'
-        })
-    })
+	// @route GET api/users/test
+	// @desc tests the users api route
+	app.get('/api/user/test', (req, res) => {
+		res.json({
+			success: true,
+			msg: 'Testing endpoint works correctly.'
+		})
+	})
 
-    // @route POST api/users/
+	// @route POST api/users/
 	// @desc creates a new user
 	app.post('/api/users', (req, res) => {
 		db.user
@@ -23,7 +23,9 @@ module.exports = function(app) {
 			})
 			.then((user) => {
 				if (user) {
-					return res.status(400).json({ email: 'This email already exists.' });
+					return res.status(400).json({
+						email: 'This email already exists.'
+					});
 				} else {
 					const newUser = {
 						firstName: req.body.firstName,
@@ -72,27 +74,27 @@ module.exports = function(app) {
 	// @route PUT api/users/:id
 	// @desc updates a user
 	app.put('/api/users/:id', (req, res) => {
-		db.user.update(
-			{
-				firstName: req.body.firstName,
-				lastName: req.body.lastName,
-				email: req.body.email,
-			},
-			{
-				where: {
-				  id: req.params.id
-				}
+		db.user.update({
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
+			email: req.body.email,
+		}, {
+			where: {
+				id: req.params.id
 			}
-		).then((data) => {
-			res.status(200).json({
-				firstName: data.firstName,
-				lastName: data.lastName,
-				email: data.email,
-				message: "User account successfully updated.",
-				userUpdated: true
-			});
-		}).catch((err) => {
-			res.status(500).json(err);
+		}).then(() => {
+			db.user.findByPk(req.params.id).then((data) => {
+					res.status(200).json({
+						firstName: data.firstName,
+						lastName: data.lastName,
+						email: data.email,
+						message: "User account successfully updated.",
+						userUpdated: true
+					})
+				})
+				.catch((err) => {
+					res.status(500).json(err);
+				});
 		});
 	});
 
