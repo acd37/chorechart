@@ -52,5 +52,19 @@ module.exports = function(app) {
 			});
 	});
 
+	app.delete('/api/users/:id', (req, res) => {
+		db.user.destroy({
+			where: {
+				id: req.params.id
+			}
+		}).then(() => {
+			res.status(200).json({
+				message: "User account successfully deleted",
+				userDeleted: true
+			});
+		}).catch((err) => {
+			res.status(500).json(err);
+		});
+	});
 
 }
