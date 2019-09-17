@@ -34,7 +34,9 @@ module.exports = function(app) {
             if (user.familyId) {
                 return res.status(400).json({ familyId: 'You are already a member of a family.' });
             } else {
+                let familyId = "";
                 db.family.create(req.body).then((family) => {
+                    familyId = family.id;
                     db.user.update(
                         {
                             familyId: family.id
@@ -46,7 +48,9 @@ module.exports = function(app) {
                         }
                     ).then((user) => {
                         res.status(201).json({
-                            data: user,
+                            // For API Testing
+                            // NOTE: Remove prior to release.
+                            familyId: familyId,
                             message: "Family successfully created.",
                             familyCreated: true
                         }); 
