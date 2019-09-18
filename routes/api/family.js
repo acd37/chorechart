@@ -17,7 +17,7 @@ module.exports = function(app) {
         db.family
             .findOne({
                 where: {
-                    familyCode: req.user.familyCode
+                    id: req.user.familyId
                 },
                 include: [{ model: db.user }, { model: db.chore }]
             })
