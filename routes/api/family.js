@@ -11,6 +11,20 @@ module.exports = function(app) {
         });
     });
 
+    // @route GET api/family/current
+    // @desc get family of currently logged in user
+    app.get('/api/family/current', passport.authenticate('jwt', { session: false }), (req, res) => {
+        db.family
+            .findOne({
+                where: {
+                    id: req.user.familyId
+                },
+                include: [{ model: db.user }, { model: db.chore }]
+            })
+            .then((family) => res.status(200).json(family))
+            .catch((err) => console.log(err));
+    });
+
     // @route PUT api/family/:id
     // @desc creates new family
     app.put('/api/family/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
