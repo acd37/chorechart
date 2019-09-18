@@ -21,7 +21,7 @@ module.exports = function(app) {
                     familyCode: req.body.familyCode,
                     familyName: req.body.familyName
                 },
-                { where: { id } }
+                { where: { id: req.params.id } }
             )
             .then(() => {
                 db.family
