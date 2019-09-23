@@ -34,7 +34,15 @@ module.exports = function(app) {
                 },
                 include: [{ model: db.user }, { model: db.chore }]
             })
-            .then((family) => res.status(200).json(family))
+            .then((family) => {
+                if (!family) {
+                    res.status(200).json({
+                        family: 'This user account is not currently assigned to a family group.'
+                    });
+                } else {
+                    res.status(200).json(family);
+                }
+            })
             .catch((err) => console.log(err));
     });
 
@@ -55,12 +63,13 @@ module.exports = function(app) {
                         .json({ familyId: 'You are already a member of a family.' });
                 } else {
                     let familyId = '';
+
                     db.family.create(req.body).then((family) => {
                         familyId = family.id;
                         db.user
                             .update(
                                 {
-                                    familyId: family.id
+                                    familyId
                                 },
                                 {
                                     where: {

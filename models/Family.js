@@ -7,7 +7,7 @@ module.exports = function(sequelize, Sequelize) {
         },
         familyCode: {
             type: Sequelize.STRING,
-            allowNull: false
+            defaultValue: Sequelize.UUIDV4
         },
         familyName: {
             type: Sequelize.STRING,
