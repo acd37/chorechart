@@ -20,6 +20,14 @@ module.exports = function(sequelize, Sequelize) {
         password: {
             type: Sequelize.STRING,
             allowNull: false
+        },
+        choreWeeksWon: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+        },
+        chorePoints: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
         }
     });
 
@@ -29,8 +37,6 @@ module.exports = function(sequelize, Sequelize) {
                 allowNull: false
             }
         });
-
-        
     };
 
     return User;

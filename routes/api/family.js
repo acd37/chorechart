@@ -188,4 +188,8 @@ module.exports = function(app) {
                 });
             });
     });
+
+    // need route for remove user from family
+
+    // need route for re-generating familyCode
 };
