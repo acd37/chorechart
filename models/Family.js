@@ -17,7 +17,7 @@ module.exports = function(sequelize, Sequelize) {
 
     Family.associate = function(models) {
         Family.hasMany(models.user, {
-            onDelete: 'cascade'
+            onDelete: 'SET NULL'
         });
         Family.hasMany(models.chore, {
             onDelete: 'cascade'
