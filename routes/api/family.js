@@ -46,7 +46,43 @@ module.exports = function(app) {
             .catch((err) => console.log(err));
     });
 
-    // @route POST api/users/
+    // @route POST api/family/join
+    // @desc allows a user to join an existing family
+    app.post('/api/family/join', passport.authenticate('jwt', { session: false }), (req, res) => {
+        db.family
+            .findOne({
+                where: {
+                    familyCode: req.body.familyCode
+                }
+            })
+            .then((family) => {
+                db.user
+                    .update(
+                        {
+                            familyCode: family.familyCode,
+                            familyId: family.id
+                        },
+                        {
+                            where: {
+                                id: req.user.id
+                            }
+                        }
+                    )
+                    .then(() => {
+                        res.status(200).json({
+                            user: 'User has successfully joined a family.',
+                            updatedUser: true
+                        });
+                    })
+                    .catch((err) => {
+                        res.status(500).json({
+                            user: 'User could not be added to the family at this time'
+                        });
+                    });
+            });
+    });
+
+    // @route POST api/family/
     // @desc creates new family
     // adds family ID to user familyId
     app.post('/api/family', passport.authenticate('jwt', { session: false }), (req, res) => {
