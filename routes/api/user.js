@@ -72,7 +72,7 @@ module.exports = function(app) {
 
     // @route DELETE api/users/
     // @desc deletes a user
-    app.delete('/api/users/:id', (req, res) => {
+    app.delete('/api/users/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
         db.user
             .destroy({
                 where: {
@@ -92,7 +92,7 @@ module.exports = function(app) {
 
     // @route PUT api/users/:id
     // @desc updates a user
-    app.put('/api/users/:id', (req, res) => {
+    app.put('/api/users/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
         db.user
             .update(
                 {
