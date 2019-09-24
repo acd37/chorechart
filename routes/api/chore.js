@@ -61,36 +61,56 @@ module.exports = function(app) {
     // @route PUT api/chore/:id
     // @desc updates a chore
     app.put('/api/chore/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+        let pointValue;
+
         db.chore
-            .update(
-                {
-                    description: req.body.description,
-                    isComplete: req.body.isComplete
-                },
-                {
-                    where: {
-                        id: req.params.id
-                    }
-                }
-            )
-            .then(() =>
-                db.chore
-                    .findOne({ where: { id: req.params.id } })
-                    .then((chore) => {
-                        res.status(200).json({
-                            pointValue: chore.pointValue,
-                            isComplete: chore.isComplete,
-                            choreUpdated: true,
-                            msg: 'Chore successfully updated.'
-                        });
+            .findOne({
+                where: { id: req.params.id }
+            })
+            .then((chore) => {
+                pointValue = chore.pointValue;
+
+                chore
+                    .update({
+                        description: req.body.description,
+                        isComplete: req.body.isComplete
                     })
-                    .catch((err) => {
-                        res.status(500).json(err);
+                    .then(() => {
+                        let incrementOrDecrement = '';
+
+                        if (chore.isComplete) {
+                            incrementOrDecrement = 'increment';
+                        } else {
+                            incrementOrDecrement = 'decrement';
+                        }
+
+                        db.user[incrementOrDecrement](['chorePoints'], {
+                            by: pointValue,
+                            where: { id: req.user.id }
+                        })
+                            .then(() => {
+                                res.status(200).json({
+                                    chore: 'Chore has been updated.',
+                                    updatedChore: true
+                                });
+                            })
+                            .catch((err) =>
+                                res.json({
+                                    user: 'User points could not be updated.'
+                                })
+                            );
                     })
-            )
-            .catch((err) => {
-                res.json({ error: 'Chore could not be updated at this time.' });
-            });
+                    .catch((err) =>
+                        res.json({
+                            chore: 'Chore could not be updated.'
+                        })
+                    );
+            })
+            .catch((err) =>
+                res.json({
+                    chore: 'Chore could not be updated.'
+                })
+            );
     });
 
     // @route DELETE api/chore/:id
