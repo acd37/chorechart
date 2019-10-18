@@ -18,10 +18,11 @@ class App extends Component {
         return (
             <Router>
                 <Switch>
-                    <Route exact path='/' component={Login} />
-                    <Route exact path='/register' component={Register} />
-                    <PrivateRoute exact path='/dashboard' component={Dashboard} />
-                    <Route component={NoMatch} />
+                    <div className='container'>
+                        <Route exact path='/' component={Login} />
+                        <Route exact path='/register' component={Register} />
+                        <PrivateRoute exact path='/dashboard' component={Dashboard} />
+                    </div>
                 </Switch>
             </Router>
         );
