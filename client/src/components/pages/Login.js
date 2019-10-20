@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
+import setAuthToken from '../common/setAuthToken';
 import axios from 'axios';
 
 class Login extends Component {
@@ -11,6 +13,22 @@ class Login extends Component {
         redirect: false,
         errors: {}
     };
+
+    componentDidMount() {
+        // Persistent Login
+        if (localStorage.chorechart) {
+            setAuthToken(localStorage.chorechart);
+            const decoded = jwtDecode(localStorage.chorechart);
+            const currentTime = Date.now() / 1000;
+
+            if (decoded.exp > currentTime) {
+                this.setState({
+                    userID: decoded.id,
+                    isAuthenticated: true
+                });
+            }
+        }
+    }
 
     handleLogin = (e) => {
         e.preventDefault();
@@ -43,12 +61,13 @@ class Login extends Component {
 
                 if (res.data.token) {
                     localStorage.setItem('chorechart', res.data.token);
-                }
+                    setAuthToken(localStorage.chorechart);
 
-                this.setState({
-                    userID: res.data.id,
-                    isAuthenticated: true
-                });
+                    this.setState({
+                        userID: res.data.id,
+                        isAuthenticated: true
+                    });
+                }
             })
             .catch((err) => {
                 const errors = {};
