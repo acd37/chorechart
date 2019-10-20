@@ -23,7 +23,7 @@ module.exports = function(app) {
         db.user.findOne({ where: { email } }).then((user) => {
             // Check the user exists
             if (!user) {
-                return res.status(404).json({ msg: 'User not found.' });
+                return res.status(404).json({ email: 'User not found.' });
             }
 
             let currentUser = user.get();
@@ -60,7 +60,9 @@ module.exports = function(app) {
                         })
                         .catch((err) => console.log(err));
                 } else {
-                    return res.status(400).json({ msg: 'User password could not be validated.' });
+                    return res
+                        .status(400)
+                        .json({ user: 'User could not be validated. Please try again.' });
                 }
             });
         });

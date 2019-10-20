@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 class Login extends Component {
     state = {
+        isAuthenticated: false,
+        userID: '',
         email: '',
         password: '',
+        redirect: false,
         errors: {}
     };
 
@@ -32,6 +36,35 @@ class Login extends Component {
         };
 
         // axios call to log in user
+        axios
+            .post('/api/auth/login', user)
+            .then((res) => {
+                console.log(res);
+
+                if (res.data.token) {
+                    localStorage.setItem('chorechart', res.data.token);
+                }
+
+                this.setState({
+                    userID: res.data.id,
+                    isAuthenticated: true
+                });
+            })
+            .catch((err) => {
+                const errors = {};
+
+                if (err.response.data.email) {
+                    errors.email = err.response.data.email;
+                }
+
+                if (err.response.data.user) {
+                    errors.user = err.response.data.user;
+                }
+
+                this.setState({ errors });
+
+                console.log(err.response.data);
+            });
     };
 
     handleChange = (e) => {
@@ -43,6 +76,20 @@ class Login extends Component {
     };
 
     render() {
+        if (this.state.isAuthenticated) {
+            return (
+                <Redirect
+                    to={{
+                        pathname: '/dashboard',
+                        state: {
+                            // can be access under this.props.location.state.userID in <Dashboard />
+                            userID: this.state.userID
+                        }
+                    }}
+                />
+            );
+        }
+
         return (
             <div className='row'>
                 <div className='col-md-6 offset-md-3'>
@@ -50,7 +97,7 @@ class Login extends Component {
 
                     <form onSubmit={this.handleLogin} className='mb-3'>
                         <div className='form-group'>
-                            <label for='email'>Email address</label>
+                            <label htmlFor='email'>Email address</label>
                             <input
                                 type='text'
                                 name='email'
@@ -60,11 +107,11 @@ class Login extends Component {
                                 onChange={this.handleChange}
                                 value={this.state.email}
                             />
-                            <div class='invalid-feedback'>{this.state.errors.email}</div>
+                            <div className='invalid-feedback'>{this.state.errors.email}</div>
                         </div>
 
                         <div className='form-group'>
-                            <label for='password'>Password</label>
+                            <label htmlFor='password'>Password</label>
                             <input
                                 type='password'
                                 name='password'
@@ -74,11 +121,14 @@ class Login extends Component {
                                 onChange={this.handleChange}
                                 value={this.state.password}
                             />
-                            <div class='invalid-feedback'>{this.state.errors.password}</div>
+                            <div className='invalid-feedback'>{this.state.errors.password}</div>
                         </div>
                         <button type='submit' className='btn btn-primary btn-sm btn-block'>
                             Submit
                         </button>
+                        <div style={{ marginTop: '0.25rem', fontSize: '80%', color: '#dc3545' }}>
+                            {this.state.errors.user}
+                        </div>
                     </form>
                     <p>
                         Not registered? <Link to='/register'>Sign up.</Link>

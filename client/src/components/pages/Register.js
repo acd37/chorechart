@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 class Login extends Component {
     state = {
@@ -8,6 +9,7 @@ class Login extends Component {
         email: '',
         password: '',
         password2: '',
+        redirect: false,
         errors: {}
     };
 
@@ -59,6 +61,22 @@ class Login extends Component {
         const newUser = { firstName, lastName, email, password };
 
         // axios call to register new user
+        axios
+            .post('/api/user', newUser)
+            .then((res) => {
+                console.log(res.data);
+                this.setState({
+                    redirect: true
+                });
+            })
+            .catch((err) => {
+                const errors = {};
+                if (err.response.data.email) {
+                    errors.email = err.response.data.email;
+                }
+
+                this.setState({ errors });
+            });
     };
 
     handleChange = (e) => {
@@ -70,6 +88,10 @@ class Login extends Component {
     };
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to='/' />;
+        }
+
         return (
             <div className='row'>
                 <div className='col-md-6 offset-md-3'>
@@ -77,7 +99,7 @@ class Login extends Component {
 
                     <form onSubmit={this.handleRegister} className='mb-3'>
                         <div className='form-group'>
-                            <label for='firstName'>First Name</label>
+                            <label htmlFor='firstName'>First Name</label>
                             <input
                                 type='text'
                                 name='firstName'
@@ -87,10 +109,10 @@ class Login extends Component {
                                 onChange={this.handleChange}
                                 value={this.state.firstName}
                             />
-                            <div class='invalid-feedback'>{this.state.errors.firstName}</div>
+                            <div className='invalid-feedback'>{this.state.errors.firstName}</div>
                         </div>
                         <div className='form-group'>
-                            <label for='lastName'>Last Name</label>
+                            <label htmlFor='lastName'>Last Name</label>
                             <input
                                 type='text'
                                 name='lastName'
@@ -100,10 +122,10 @@ class Login extends Component {
                                 onChange={this.handleChange}
                                 value={this.state.lastName}
                             />
-                            <div class='invalid-feedback'>{this.state.errors.lastName}</div>
+                            <div className='invalid-feedback'>{this.state.errors.lastName}</div>
                         </div>
                         <div className='form-group'>
-                            <label for='email'>Email address</label>
+                            <label htmlFor='email'>Email address</label>
                             <input
                                 type='text'
                                 name='email'
@@ -116,7 +138,7 @@ class Login extends Component {
                             <div class='invalid-feedback'>{this.state.errors.email}</div>
                         </div>
                         <div className='form-group'>
-                            <label for='password'>Password</label>
+                            <label htmlFor='password'>Password</label>
                             <input
                                 type='password'
                                 name='password'
@@ -126,10 +148,10 @@ class Login extends Component {
                                 onChange={this.handleChange}
                                 value={this.state.password}
                             />
-                            <div class='invalid-feedback'>{this.state.errors.password}</div>
+                            <div className='invalid-feedback'>{this.state.errors.password}</div>
                         </div>
                         <div className='form-group'>
-                            <label for='password2'>Confirm Password</label>
+                            <label htmlFor='password2'>Confirm Password</label>
                             <input
                                 type='password'
                                 name='password2'
@@ -139,7 +161,7 @@ class Login extends Component {
                                 onChange={this.handleChange}
                                 value={this.state.password2}
                             />
-                            <div class='invalid-feedback'>{this.state.errors.password}</div>
+                            <div className='invalid-feedback'>{this.state.errors.password}</div>
                         </div>
                         <button className='btn btn-primary btn-sm btn-block' type='submit'>
                             Submit

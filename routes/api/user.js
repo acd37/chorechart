@@ -30,7 +30,7 @@ module.exports = function(app) {
 
     // @route POST api/users/
     // @desc creates a new user
-    app.post('/api/users', (req, res) => {
+    app.post('/api/user', (req, res) => {
         db.user
             .findOne({
                 where: {
@@ -40,7 +40,7 @@ module.exports = function(app) {
             .then((user) => {
                 if (user) {
                     return res.status(400).json({
-                        email: 'This email already exists.'
+                        email: 'This email already exists. Cannot create account.'
                     });
                 } else {
                     const newUser = {
