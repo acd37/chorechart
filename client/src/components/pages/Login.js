@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import { Button, Form } from 'semantic-ui-react'
 import jwtDecode from 'jwt-decode';
 import setAuthToken from '../common/setAuthToken';
 import axios from 'axios';
+
+const styles = {
+    wrapper: {
+        width: "400px",
+        maxWidth: "90%",
+        margin: "100px auto"
+    }
+}
 
 class Login extends Component {
     state = {
@@ -76,8 +85,8 @@ class Login extends Component {
                     errors.email = err.response.data.email;
                 }
 
-                if (err.response.data.user) {
-                    errors.user = err.response.data.user;
+                if (err.response.data.password) {
+                    errors.password = err.response.data.password;
                 }
 
                 this.setState({ errors });
@@ -110,50 +119,39 @@ class Login extends Component {
         }
 
         return (
-            <div className='row'>
-                <div className='col-md-6 offset-md-3'>
-                    <h1 className='text-center'> Login </h1>
-
-                    <form onSubmit={this.handleLogin} className='mb-3'>
-                        <div className='form-group'>
-                            <label htmlFor='email'>Email address</label>
-                            <input
-                                type='text'
-                                name='email'
-                                id='email'
-                                className={`form-control ${this.state.errors.email &&
-                                    'is-invalid'}`}
-                                onChange={this.handleChange}
-                                value={this.state.email}
-                            />
-                            <div className='invalid-feedback'>{this.state.errors.email}</div>
-                        </div>
-
-                        <div className='form-group'>
-                            <label htmlFor='password'>Password</label>
-                            <input
-                                type='password'
-                                name='password'
-                                id='password'
-                                className={`form-control ${this.state.errors.password &&
-                                    'is-invalid'}`}
-                                onChange={this.handleChange}
-                                value={this.state.password}
-                            />
-                            <div className='invalid-feedback'>{this.state.errors.password}</div>
-                        </div>
-                        <button type='submit' className='btn btn-primary btn-sm btn-block'>
-                            Submit
-                        </button>
-                        <div style={{ marginTop: '0.25rem', fontSize: '80%', color: '#dc3545' }}>
-                            {this.state.errors.user}
-                        </div>
-                    </form>
-                    <p>
-                        Not registered? <Link to='/register'>Sign up.</Link>
-                    </p>
-                </div>
-            </div>
+            <div style={styles.wrapper}>
+                <h1>Login</h1>
+                <Form onSubmit={this.handleLogin}>
+                <Form.Input
+                    fluid
+                    label="Email"
+                    name='email'
+                    value={this.state.email}
+                    onChange={this.handleChange}
+                    placeholder='Email'
+                    type="email"
+                    error={this.state.errors.email && this.state.errors.email}
+                    />
+                <Form.Input
+                    fluid
+                    label="Password"
+                    name='password'
+                    value={this.state.password}
+                    onChange={this.handleChange}
+                    placeholder='Password'
+                    type="password"
+                    error={this.state.errors.password && this.state.errors.password}
+                    />
+                <Button 
+                    fluid
+                    type='submit'>
+                    Submit
+                </Button>
+            </Form>
+            <p>
+            Not registered? <Link to='/register'>Sign up.</Link>
+            </p>
+          </div>
         );
     }
 }

@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import { Button, Form } from 'semantic-ui-react'
 import axios from 'axios';
+
+const styles = {
+    wrapper: {
+        width: "400px",
+        maxWidth: "90%",
+        margin: "100px auto"
+    }
+}
 
 class Login extends Component {
     state = {
@@ -52,7 +61,7 @@ class Login extends Component {
         }
 
         if (password !== password2) {
-            errors.password = 'Your passwords do not match.';
+            errors.password2 = 'Your passwords do not match.';
             return this.setState({
                 errors: errors
             });
@@ -93,85 +102,69 @@ class Login extends Component {
         }
 
         return (
-            <div className='row'>
-                <div className='col-md-6 offset-md-3'>
-                    <h1 className='text-center'> Register </h1>
-
-                    <form onSubmit={this.handleRegister} className='mb-3'>
-                        <div className='form-group'>
-                            <label htmlFor='firstName'>First Name</label>
-                            <input
-                                type='text'
-                                name='firstName'
-                                id='firstName'
-                                className={`form-control ${this.state.errors.firstName &&
-                                    'is-invalid'}`}
-                                onChange={this.handleChange}
-                                value={this.state.firstName}
-                            />
-                            <div className='invalid-feedback'>{this.state.errors.firstName}</div>
-                        </div>
-                        <div className='form-group'>
-                            <label htmlFor='lastName'>Last Name</label>
-                            <input
-                                type='text'
-                                name='lastName'
-                                id='lastName'
-                                className={`form-control ${this.state.errors.lastName &&
-                                    'is-invalid'}`}
-                                onChange={this.handleChange}
-                                value={this.state.lastName}
-                            />
-                            <div className='invalid-feedback'>{this.state.errors.lastName}</div>
-                        </div>
-                        <div className='form-group'>
-                            <label htmlFor='email'>Email address</label>
-                            <input
-                                type='text'
-                                name='email'
-                                id='email'
-                                className={`form-control ${this.state.errors.email &&
-                                    'is-invalid'}`}
-                                onChange={this.handleChange}
-                                value={this.state.email}
-                            />
-                            <div class='invalid-feedback'>{this.state.errors.email}</div>
-                        </div>
-                        <div className='form-group'>
-                            <label htmlFor='password'>Password</label>
-                            <input
-                                type='password'
-                                name='password'
-                                id='password'
-                                className={`form-control ${this.state.errors.password &&
-                                    'is-invalid'}`}
-                                onChange={this.handleChange}
-                                value={this.state.password}
-                            />
-                            <div className='invalid-feedback'>{this.state.errors.password}</div>
-                        </div>
-                        <div className='form-group'>
-                            <label htmlFor='password2'>Confirm Password</label>
-                            <input
-                                type='password'
-                                name='password2'
-                                id='password2'
-                                className={`form-control ${this.state.errors.password &&
-                                    'is-invalid'}`}
-                                onChange={this.handleChange}
-                                value={this.state.password2}
-                            />
-                            <div className='invalid-feedback'>{this.state.errors.password}</div>
-                        </div>
-                        <button className='btn btn-primary btn-sm btn-block' type='submit'>
-                            Submit
-                        </button>
-                    </form>
-                    <p>
-                        Already registered? <Link to='/'>Login.</Link>
-                    </p>
-                </div>
-            </div>
+            <div style={styles.wrapper}>
+            <h1>Register</h1>
+            <Form onSubmit={this.handleRegister}>
+            <Form.Input
+                fluid
+                label="First Name"
+                name='firstName'
+                value={this.state.firstName}
+                onChange={this.handleChange}
+                placeholder='First Name'
+                type="text"
+                error={this.state.errors.firstName && this.state.errors.firstName}
+                />
+            <Form.Input
+                fluid
+                label="Last Name"
+                name='lastName'
+                value={this.state.lastName}
+                onChange={this.handleChange}
+                placeholder='First Name'
+                type="text"
+                error={this.state.errors.lastName && this.state.errors.lastName}
+                />
+            <Form.Input
+                fluid
+                label="Email"
+                name='email'
+                value={this.state.email}
+                onChange={this.handleChange}
+                placeholder='Email'
+                type="email"
+                error={this.state.errors.email && this.state.errors.email}
+                />
+            <Form.Input
+                fluid
+                label="Password"
+                name='password'
+                value={this.state.password}
+                onChange={this.handleChange}
+                placeholder='Password'
+                type="password"
+                error={this.state.errors.password && this.state.errors.password}
+                />
+            <Form.Input
+                fluid
+                label="Confirm Password"
+                name='password2'
+                value={this.state.password2}
+                onChange={this.handleChange}
+                placeholder='Confirm Password'
+                type="password"
+                error={this.state.errors.password2 && this.state.errors.password2}
+                />
+            <Button 
+                fluid
+                type='submit'>
+                Submit
+            </Button>
+        </Form>
+        <p>
+        Not registered? <Link to='/register'>Sign up.</Link>
+        </p>
+      </div>
         );
     }
 }
