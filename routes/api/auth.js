@@ -62,7 +62,7 @@ module.exports = function(app) {
                 } else {
                     return res
                         .status(400)
-                        .json({ user: 'User could not be validated. Please try again.' });
+                        .json({ password: 'User could not be validated. Please try again.' });
                 }
             });
         });
