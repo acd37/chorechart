@@ -99,6 +99,7 @@ class Login extends Component {
         const { name, value } = e.target;
 
         this.setState({
+            errors: {},
             [name]: value
         });
     };
