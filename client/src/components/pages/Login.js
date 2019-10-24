@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 import jwtDecode from 'jwt-decode';
 import setAuthToken from '../common/setAuthToken';
 import axios from 'axios';
+
+const styles = {
+    wrapper: {
+        width: "400px",
+        maxWidth: "90%",
+        margin: "100px auto"
+    }
+}
 
 class Login extends Component {
     state = {
@@ -111,10 +119,11 @@ class Login extends Component {
         }
 
         return (
-            <div>
+            <div style={styles.wrapper}>
+                <h1>Login</h1>
                 <Form onSubmit={this.handleLogin}>
-                <Form.Group>
                 <Form.Input
+                    fluid
                     label="Email"
                     name='email'
                     value={this.state.email}
@@ -123,9 +132,8 @@ class Login extends Component {
                     type="email"
                     error={this.state.errors.email && this.state.errors.email}
                     />
-                </Form.Group>
-                <Form.Group>
                 <Form.Input
+                    fluid
                     label="Password"
                     name='password'
                     value={this.state.password}
@@ -134,8 +142,11 @@ class Login extends Component {
                     type="password"
                     error={this.state.errors.password && this.state.errors.password}
                     />
-                </Form.Group>
-                <Button type='submit'>Submit</Button>
+                <Button 
+                    fluid
+                    type='submit'>
+                    Submit
+                </Button>
             </Form>
             <p>
             Not registered? <Link to='/register'>Sign up.</Link>
