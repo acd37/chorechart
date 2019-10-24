@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Message, Grid, Form, Button, Icon, Label, Segment, Divider } from 'semantic-ui-react';
+import { Header, Message, Grid, Form, Button, Icon, Label, Segment, Divider } from 'semantic-ui-react';
 import axios from 'axios';
 
 const styles = {
@@ -26,15 +26,18 @@ class Dashboard extends Component {
 
     componentDidMount() {
         // const id = this.props.location.state.userID;
+        this.handleGetUser();
+    };
 
+    handleGetUser = () => {
         axios
-            .get('/api/user/current')
-            .then((res) => {
-                this.setState({
-                    user: res.data
-                });
-            })
-            .catch((err) => console.log(err.response.data));
+        .get('/api/user/current')
+        .then((res) => {
+            this.setState({
+                user: res.data
+            });
+        })
+        .catch((err) => console.log(err.response.data));
     };
 
     handleCode = (e) => {
@@ -46,15 +49,60 @@ class Dashboard extends Component {
             return this.setState({
                 errors: errors
             });
-        }
-    
-        console.log("Family Code Submitted")
+        };
+
+        const code = { familyCode: familyCode }
+
+        axios
+            .post('/api/family/join', code)
+            .then((res) => {
+                console.log(res);
+                this.handleGetUser();
+            })
+            .catch((err) => {
+                const errors = {};
+
+                if (err.response.data.familyCode) {
+                    errors.familyCode = err.response.data.familyCode;
+                }
+
+                if (err.response.data.user) {
+                    errors.user = err.response.data.user;
+                }
+
+                this.setState({ errors });
+
+            })
     }
 
     handleFamily = (e) => {
         e.preventDefault();
     
-        console.log("New Family Submitted")
+        const { errors, familyName } = this.state;
+        if (!familyName) {
+            errors.familyName = 'Please provide a family name.';
+            return this.setState({
+                errors: errors
+            });
+        };
+
+        const fName = { familyName: familyName };
+
+        axios
+            .post('/api/family', fName)
+            .then((res) => {
+                this.handleGetUser();
+            })
+            .catch((err) => {
+                const errors = {};
+
+                if (err) {
+                    errors.familyName = "There was an error.";
+                }
+
+                this.setState({ errors });
+            })
+
     }
 
     handleChange = (e) => {
@@ -69,6 +117,7 @@ class Dashboard extends Component {
     render() {
         let message;
 
+        // Will display one of two dashboard messages depending on whether the user is a member of a family group or not.
         if (this.state.user.family === null) {
             message = 
                 <Message size='huge' negative>
@@ -103,6 +152,7 @@ class Dashboard extends Component {
                                 onChange={this.handleChange}
                                 placeholder='Family Name'
                                 type="text"
+                                error={this.state.errors.familyName && this.state.errors.familyName} 
                                 />
                             <Label style={styles.label}><Icon name='info circle' />Create a unique Family Name identifier (e.g. <em>The Brady Bunch</em>).</Label>
                             <Button fluid content='Create' primary />
@@ -123,9 +173,8 @@ class Dashboard extends Component {
 
         return (
             <div style={styles.wrapper}>
-                <h1>Dashboard</h1>
-                <div>{message}
-                </div>
+                <Header textAlign={"center"} as='h1'>Dashboard</Header>
+                <div>{message}</div>
             </div>
         );
     }

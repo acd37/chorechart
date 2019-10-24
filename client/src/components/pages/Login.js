@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Form } from 'semantic-ui-react'
+import { Header, Button, Form } from 'semantic-ui-react'
 import jwtDecode from 'jwt-decode';
 import setAuthToken from '../common/setAuthToken';
 import axios from 'axios';
@@ -121,7 +121,7 @@ class Login extends Component {
 
         return (
             <div style={styles.wrapper}>
-                <h1>Login</h1>
+                <Header textAlign={"center"} as='h1'>Log In</Header>
                 <Form onSubmit={this.handleLogin}>
                 <Form.Input
                     fluid
