@@ -6,7 +6,7 @@ import PrivateRoute from './components/common/PrivateRoute';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
 import Dashboard from './components/pages/Dashboard';
-import NoMatch from './components/pages/NoMatch';
+// import NoMatch from './components/pages/NoMatch';
 
 // persistent login
 if (localStorage.chorechart) {

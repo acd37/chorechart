@@ -76,10 +76,14 @@ module.exports = function(app) {
                     })
                     .catch((err) => {
                         res.status(500).json({
-                            user: 'User could not be added to the family at this time'
+                            user: 'User could not be added to the family at this time.'
                         });
                     });
-            });
+            }).catch((err) => {
+                res.status(500).json({
+                    familyCode: "Family Code does not exist"
+                })
+            })
     });
 
     // @route POST api/family/

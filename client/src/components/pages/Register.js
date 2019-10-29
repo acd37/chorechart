@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Form } from 'semantic-ui-react'
+import { Header, Button, Form } from 'semantic-ui-react'
 import axios from 'axios';
 
 const styles = {
@@ -92,6 +92,7 @@ class Login extends Component {
         const { name, value } = e.target;
 
         this.setState({
+            errors: {},
             [name]: value
         });
     };
@@ -103,7 +104,7 @@ class Login extends Component {
 
         return (
             <div style={styles.wrapper}>
-            <h1>Register</h1>
+            <Header textAlign={"center"} as='h1'>Register</Header>
             <Form onSubmit={this.handleRegister}>
             <Form.Input
                 fluid

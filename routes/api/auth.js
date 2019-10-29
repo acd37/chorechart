@@ -39,7 +39,7 @@ module.exports = function(app) {
                                 id: user.id,
                                 family: user.family
                                     ? user.family
-                                    : 'You  are not currently assigned to a family group.',
+                                    : 'You are not currently assigned to a family group.',
                                 firstName: user.firstName,
                                 lastName: user.lastName
                             };
