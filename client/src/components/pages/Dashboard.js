@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Header, Message, Grid, Form, Button, Icon, Label, Segment, Divider } from 'semantic-ui-react';
 import axios from 'axios';
+import FamilyTile from "../common/FamilyTile";
+import ChoreTile from "../common/ChoreTile";
 
 const styles = {
     wrapper: {
@@ -162,13 +164,23 @@ class Dashboard extends Component {
 
                         <Divider vertical>Or</Divider>
                     </Segment>
-                </Message>
+                </Message>       
         } else {
             message = 
+            <div>
                 <Message size='huge' positive>
                     <Message.Header>Welcome Back!</Message.Header>
                     <p>Be sure to check your chore list.</p>
                 </Message>
+                <Grid columns={2} padded="vertically">
+                    <Grid.Column>
+                        <FamilyTile user={this.state.user.familyId}></FamilyTile>
+                    </Grid.Column>
+                    <Grid.Column>
+                        <ChoreTile user={this.state.user.chores}></ChoreTile>
+                    </Grid.Column>
+                </Grid>
+            </div>
         }
 
         return (
