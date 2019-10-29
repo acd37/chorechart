@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Header, Button, Form } from 'semantic-ui-react'
+import { Header, Button, Form } from 'semantic-ui-react';
 import axios from 'axios';
-
+import CustomButton from '../common/CustomButton';
 const styles = {
     wrapper: {
-        width: "400px",
-        maxWidth: "90%",
-        margin: "100px auto"
+        width: '400px',
+        maxWidth: '90%',
+        margin: '100px auto'
     }
-}
+};
 
 class Login extends Component {
     state = {
@@ -104,68 +104,68 @@ class Login extends Component {
 
         return (
             <div style={styles.wrapper}>
-            <Header textAlign={"center"} as='h1'>Register</Header>
-            <Form onSubmit={this.handleRegister}>
-            <Form.Input
-                fluid
-                label="First Name"
-                name='firstName'
-                value={this.state.firstName}
-                onChange={this.handleChange}
-                placeholder='First Name'
-                type="text"
-                error={this.state.errors.firstName && this.state.errors.firstName}
-                />
-            <Form.Input
-                fluid
-                label="Last Name"
-                name='lastName'
-                value={this.state.lastName}
-                onChange={this.handleChange}
-                placeholder='First Name'
-                type="text"
-                error={this.state.errors.lastName && this.state.errors.lastName}
-                />
-            <Form.Input
-                fluid
-                label="Email"
-                name='email'
-                value={this.state.email}
-                onChange={this.handleChange}
-                placeholder='Email'
-                type="email"
-                error={this.state.errors.email && this.state.errors.email}
-                />
-            <Form.Input
-                fluid
-                label="Password"
-                name='password'
-                value={this.state.password}
-                onChange={this.handleChange}
-                placeholder='Password'
-                type="password"
-                error={this.state.errors.password && this.state.errors.password}
-                />
-            <Form.Input
-                fluid
-                label="Confirm Password"
-                name='password2'
-                value={this.state.password2}
-                onChange={this.handleChange}
-                placeholder='Confirm Password'
-                type="password"
-                error={this.state.errors.password2 && this.state.errors.password2}
-                />
-            <Button 
-                fluid
-                type='submit'>
-                Submit
-            </Button>
-        </Form>
-        <p>
-        Not registered? <Link to='/register'>Sign up.</Link>
-        </p>
-      </div>
+                <Header textAlign={'center'} as='h1'>
+                    Register
+                </Header>
+                <Form onSubmit={this.handleRegister}>
+                    <Form.Input
+                        fluid
+                        label='First Name'
+                        name='firstName'
+                        value={this.state.firstName}
+                        onChange={this.handleChange}
+                        placeholder='First Name'
+                        type='text'
+                        error={this.state.errors.firstName && this.state.errors.firstName}
+                    />
+                    <Form.Input
+                        fluid
+                        label='Last Name'
+                        name='lastName'
+                        value={this.state.lastName}
+                        onChange={this.handleChange}
+                        placeholder='First Name'
+                        type='text'
+                        error={this.state.errors.lastName && this.state.errors.lastName}
+                    />
+                    <Form.Input
+                        fluid
+                        label='Email'
+                        name='email'
+                        value={this.state.email}
+                        onChange={this.handleChange}
+                        placeholder='Email'
+                        type='email'
+                        error={this.state.errors.email && this.state.errors.email}
+                    />
+                    <Form.Input
+                        fluid
+                        label='Password'
+                        name='password'
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                        placeholder='Password'
+                        type='password'
+                        error={this.state.errors.password && this.state.errors.password}
+                    />
+                    <Form.Input
+                        fluid
+                        label='Confirm Password'
+                        name='password2'
+                        value={this.state.password2}
+                        onChange={this.handleChange}
+                        placeholder='Confirm Password'
+                        type='password'
+                        error={this.state.errors.password2 && this.state.errors.password2}
+                    />
+                    <CustomButton fluid style='primary' type='submit'>
+                        Submit
+                    </CustomButton>
+                </Form>
+                <p>
+                    Already registered? <Link to='/'>Login.</Link>
+                </p>
+            </div>
         );
     }
 }
