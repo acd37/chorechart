@@ -1,13 +1,33 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Header, Button, Form } from 'semantic-ui-react';
+import { Header, Form } from 'semantic-ui-react';
 import axios from 'axios';
+
+import CustomCard from '../common/CustomCard';
 import CustomButton from '../common/CustomButton';
+
 const styles = {
+    layout: {
+        background: 'linear-gradient(90deg,rgba(78,84,200,0.8),rgba(143, 148, 251, 0.5))',
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 50
+    },
     wrapper: {
-        width: '400px',
-        maxWidth: '90%',
-        margin: '100px auto'
+        width: '450px',
+        maxWidth: '90%'
+    },
+    header: {
+        color: 'rgb(78,84,200)',
+        fontWeight: 300,
+        textTransform: 'uppercase',
+        letterSpacing: 1.2
+    },
+    subtext: {
+        color: 'rgba(0,0,0,0.6)',
+        marginBottom: 50
     }
 };
 
@@ -103,68 +123,88 @@ class Login extends Component {
         }
 
         return (
-            <div style={styles.wrapper}>
-                <Header textAlign={'center'} as='h1'>
-                    Register
-                </Header>
-                <Form onSubmit={this.handleRegister}>
-                    <Form.Input
-                        fluid
-                        label='First Name'
-                        name='firstName'
-                        value={this.state.firstName}
-                        onChange={this.handleChange}
-                        placeholder='First Name'
-                        type='text'
-                        error={this.state.errors.firstName && this.state.errors.firstName}
-                    />
-                    <Form.Input
-                        fluid
-                        label='Last Name'
-                        name='lastName'
-                        value={this.state.lastName}
-                        onChange={this.handleChange}
-                        placeholder='First Name'
-                        type='text'
-                        error={this.state.errors.lastName && this.state.errors.lastName}
-                    />
-                    <Form.Input
-                        fluid
-                        label='Email'
-                        name='email'
-                        value={this.state.email}
-                        onChange={this.handleChange}
-                        placeholder='Email'
-                        type='email'
-                        error={this.state.errors.email && this.state.errors.email}
-                    />
-                    <Form.Input
-                        fluid
-                        label='Password'
-                        name='password'
-                        value={this.state.password}
-                        onChange={this.handleChange}
-                        placeholder='Password'
-                        type='password'
-                        error={this.state.errors.password && this.state.errors.password}
-                    />
-                    <Form.Input
-                        fluid
-                        label='Confirm Password'
-                        name='password2'
-                        value={this.state.password2}
-                        onChange={this.handleChange}
-                        placeholder='Confirm Password'
-                        type='password'
-                        error={this.state.errors.password2 && this.state.errors.password2}
-                    />
-                    <CustomButton fluid style='primary' type='submit'>
-                        Submit
-                    </CustomButton>
-                </Form>
-                <p>
-                    Already registered? <Link to='/'>Login.</Link>
-                </p>
+            <div style={styles.layout}>
+                <div style={styles.wrapper}>
+                    <CustomCard>
+                        <img
+                            src={require('../../assets/images/balance.png')}
+                            alt='balance'
+                            style={{ height: 80, display: 'block', margin: '-30px auto 60px auto' }}
+                        />
+                        <Header style={styles.header} textAlign={'left'} as='h1'>
+                            Register
+                        </Header>
+                        <p style={styles.subtext}>Enter your details below to login.</p>
+                        <Form onSubmit={this.handleRegister}>
+                            <Form.Input
+                                fluid
+                                label='First Name'
+                                name='firstName'
+                                value={this.state.firstName}
+                                onChange={this.handleChange}
+                                placeholder='First Name'
+                                type='text'
+                                error={this.state.errors.firstName && this.state.errors.firstName}
+                            />
+                            <Form.Input
+                                fluid
+                                label='Last Name'
+                                name='lastName'
+                                value={this.state.lastName}
+                                onChange={this.handleChange}
+                                placeholder='First Name'
+                                type='text'
+                                error={this.state.errors.lastName && this.state.errors.lastName}
+                            />
+                            <Form.Input
+                                fluid
+                                label='Email'
+                                name='email'
+                                value={this.state.email}
+                                onChange={this.handleChange}
+                                placeholder='Email'
+                                type='email'
+                                error={this.state.errors.email && this.state.errors.email}
+                            />
+                            <Form.Input
+                                fluid
+                                label='Password'
+                                name='password'
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                                placeholder='Password'
+                                type='password'
+                                error={this.state.errors.password && this.state.errors.password}
+                            />
+                            <Form.Input
+                                fluid
+                                label='Confirm Password'
+                                name='password2'
+                                value={this.state.password2}
+                                onChange={this.handleChange}
+                                placeholder='Confirm Password'
+                                type='password'
+                                error={this.state.errors.password2 && this.state.errors.password2}
+                            />
+                            <CustomButton fluid style='primary' type='submit'>
+                                Submit
+                            </CustomButton>
+                        </Form>
+                        <p style={{ marginTop: 20, textAlign: 'left' }}>
+                            Already registered?{' '}
+                            <Link
+                                style={{
+                                    color: 'rgb(78,84,200)',
+                                    marginLeft: 5,
+                                    fontWeight: 700
+                                }}
+                                to='/'
+                            >
+                                Login.
+                            </Link>
+                        </p>
+                    </CustomCard>
+                </div>
             </div>
         );
     }
