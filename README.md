@@ -8,13 +8,13 @@ https://acd37-chorechart.herokuapp.com
 @acd37
 @TerrenceMM2
 
-## Technologiy Stack
+## Technology Stack
 * NodeJS, ExpressJS, ReactJS, Passport
 
 ## About
 * ChoreChart is a proprietary chore gaming system for families
 
-## License 
+## License
 * MIT
 
 ## Contact
