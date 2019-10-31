@@ -4,7 +4,7 @@ import { Button } from 'semantic-ui-react';
 const styles = {
     primary: {
         background: 'linear-gradient(90deg,#4e54c8,#8f94fb)',
-        borderRadius: 40,
+        borderRadius: 8,
         color: '#fff',
         textTransform: 'uppercase',
         fontWeight: 300,
