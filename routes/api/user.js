@@ -92,7 +92,7 @@ module.exports = function(app) {
 
     // @route PUT api/users/:id
     // @desc updates a user
-    app.put('/api/users/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    app.put('/api/users/', passport.authenticate('jwt', { session: false }), (req, res) => {
         db.user
             .update(
                 {
@@ -102,13 +102,13 @@ module.exports = function(app) {
                 },
                 {
                     where: {
-                        id: req.params.id
+                        id: req.user.id
                     }
                 }
             )
             .then(() => {
                 db.user
-                    .findByPk(req.params.id)
+                    .findByPk(req.user.id)
                     .then((data) => {
                         res.status(200).json({
                             firstName: data.firstName,
