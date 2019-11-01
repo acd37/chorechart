@@ -59,33 +59,33 @@ class Login extends Component {
             password2
         };
 
-        const errors = validateUserRegistration(newUser);
+        const { errors, isValid } = validateUserRegistration(newUser);
 
-        if (errors) {
-            this.setState({
+        if (!isValid) {
+            return this.setState({
                 errors
             });
-        } else {
-            newUser.email = validator.normalizeEmail(email);
-
-            // axios call to register new user
-            axios
-                .post('/api/user', newUser)
-                .then((res) => {
-                    console.log(res.data);
-                    this.setState({
-                        redirect: true
-                    });
-                })
-                .catch((err) => {
-                    const errors = {};
-                    if (err.response.data.email) {
-                        errors.email = err.response.data.email;
-                    }
-
-                    this.setState({ errors });
-                });
         }
+
+        newUser.email = validator.normalizeEmail(email);
+
+        // axios call to register new user
+        axios
+            .post('/api/user', newUser)
+            .then((res) => {
+                console.log(res.data);
+                this.setState({
+                    redirect: true
+                });
+            })
+            .catch((err) => {
+                const errors = {};
+                if (err.response.data.email) {
+                    errors.email = err.response.data.email;
+                }
+
+                this.setState({ errors });
+            });
     };
 
     handleChange = (e) => {

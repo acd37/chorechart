@@ -4,8 +4,6 @@ import _ from 'lodash';
 const validateUserRegistration = (data) => {
     let errors = {};
 
-    console.log(data);
-
     data.firstName = _.isEmpty(data.firstName) ? '' : data.firstName;
     data.lastName = _.isEmpty(data.lastName) ? '' : data.lastName;
     data.email = _.isEmpty(data.email) ? '' : data.email;
@@ -17,11 +15,11 @@ const validateUserRegistration = (data) => {
     }
 
     if (validator.isEmpty(data.lastName)) {
-        errors.lastName = 'Last name is required..';
+        errors.lastName = 'Last name is required.';
     }
 
     if (!validator.isEmail(data.email)) {
-        errors.email = 'Email address is required.';
+        errors.email = 'Please enter a valid email address.';
     }
 
     if (validator.isEmpty(data.email)) {
@@ -44,11 +42,14 @@ const validateUserRegistration = (data) => {
         errors.password2 = 'You must confirm your password.';
     }
 
-    if (!validator.matches(data.password, data.password2)) {
+    if (!validator.equals(data.password, data.password2)) {
         errors.password2 = 'Your passwords do not match.';
     }
-    console.log(errors);
-    return errors;
+
+    return {
+        errors,
+        isValid: _.isEmpty(errors)
+    };
 };
 
 export default validateUserRegistration;
