@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Header, Form } from 'semantic-ui-react';
+import validateUserRegistration from '../../utils/validateUserRegistration';
+
 import axios from 'axios';
+
+import validator from 'validator';
 
 import CustomCard from '../common/CustomCard';
 import CustomButton from '../common/CustomButton';
@@ -45,74 +49,49 @@ class Login extends Component {
     handleRegister = (e) => {
         e.preventDefault();
 
-        const { errors, firstName, lastName, email, password, password2 } = this.state;
-        if (!firstName) {
-            errors.firstName = 'You must specify a first name.';
-            return this.setState({
-                errors: errors
-            });
-        }
-        if (!lastName) {
-            errors.lastName = 'You must specify a valid last name.';
-            return this.setState({
-                errors: errors
-            });
-        }
+        const { firstName, lastName, email, password, password2 } = this.state;
 
-        if (!email) {
-            errors.email = 'You must specify a valid email address.';
-            return this.setState({
-                errors: errors
+        const newUser = {
+            firstName,
+            lastName,
+            email,
+            password,
+            password2
+        };
+
+        const errors = validateUserRegistration(newUser);
+
+        if (errors) {
+            this.setState({
+                errors
             });
-        }
+        } else {
+            newUser.email = validator.normalizeEmail(email);
 
-        if (!password) {
-            errors.password = 'You must specify a valid password.';
-            return this.setState({
-                errors: errors
-            });
-        }
+            // axios call to register new user
+            axios
+                .post('/api/user', newUser)
+                .then((res) => {
+                    console.log(res.data);
+                    this.setState({
+                        redirect: true
+                    });
+                })
+                .catch((err) => {
+                    const errors = {};
+                    if (err.response.data.email) {
+                        errors.email = err.response.data.email;
+                    }
 
-        if (!password2) {
-            errors.password = 'You must confirm you password.';
-            return this.setState({
-                errors: errors
-            });
-        }
-
-        if (password !== password2) {
-            errors.password2 = 'Your passwords do not match.';
-            return this.setState({
-                errors: errors
-            });
-        }
-
-        const newUser = { firstName, lastName, email, password };
-
-        // axios call to register new user
-        axios
-            .post('/api/user', newUser)
-            .then((res) => {
-                console.log(res.data);
-                this.setState({
-                    redirect: true
+                    this.setState({ errors });
                 });
-            })
-            .catch((err) => {
-                const errors = {};
-                if (err.response.data.email) {
-                    errors.email = err.response.data.email;
-                }
-
-                this.setState({ errors });
-            });
+        }
     };
 
     handleChange = (e) => {
         const { name, value } = e.target;
 
         this.setState({
-            errors: {},
             [name]: value
         });
     };
