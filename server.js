@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require('helmet');
 require('dotenv').config();
 const passport = require('passport');
 const chalk = require('chalk');
@@ -6,6 +7,9 @@ const { morganConfig } = require('./config/morganConfig');
 const port = process.env.PORT || 5000;
 const app = express();
 const path = require('path');
+
+// Helmet
+app.use(helmet());
 
 // Bodyparser
 app.use(express.urlencoded({ extended: false }));
@@ -27,7 +31,7 @@ require('./routes/api/chore')(app);
 require('./routes/api/family')(app);
 
 // Models
-const db = require("./models");
+const db = require('./models');
 
 db.sequelize.sync().then(() => {
     // server static assets if in production
