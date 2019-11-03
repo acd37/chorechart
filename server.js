@@ -33,7 +33,7 @@ require('./routes/api/family')(app);
 // Models
 const db = require('./models');
 
-db.sequelize.sync().then(() => {
+db.sequelize.sync({ alter: true }).then(() => {
     // server static assets if in production
     if (process.env.NODE_ENV === 'production') {
         // set static folder
