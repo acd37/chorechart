@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Header, Form } from 'semantic-ui-react';
+import validateUserRegistration from '../../utils/validateUserRegistration';
+
 import axios from 'axios';
+
+import validator from 'validator';
 
 import CustomCard from '../common/CustomCard';
 import CustomButton from '../common/CustomButton';
@@ -45,49 +49,25 @@ class Login extends Component {
     handleRegister = (e) => {
         e.preventDefault();
 
-        const { errors, firstName, lastName, email, password, password2 } = this.state;
-        if (!firstName) {
-            errors.firstName = 'You must specify a first name.';
+        const { firstName, lastName, email, password, password2 } = this.state;
+
+        const newUser = {
+            firstName,
+            lastName,
+            email,
+            password,
+            password2
+        };
+
+        const { errors, isValid } = validateUserRegistration(newUser);
+
+        if (!isValid) {
             return this.setState({
-                errors: errors
-            });
-        }
-        if (!lastName) {
-            errors.lastName = 'You must specify a valid last name.';
-            return this.setState({
-                errors: errors
+                errors
             });
         }
 
-        if (!email) {
-            errors.email = 'You must specify a valid email address.';
-            return this.setState({
-                errors: errors
-            });
-        }
-
-        if (!password) {
-            errors.password = 'You must specify a valid password.';
-            return this.setState({
-                errors: errors
-            });
-        }
-
-        if (!password2) {
-            errors.password = 'You must confirm you password.';
-            return this.setState({
-                errors: errors
-            });
-        }
-
-        if (password !== password2) {
-            errors.password2 = 'Your passwords do not match.';
-            return this.setState({
-                errors: errors
-            });
-        }
-
-        const newUser = { firstName, lastName, email, password };
+        newUser.email = validator.normalizeEmail(email);
 
         // axios call to register new user
         axios
@@ -112,7 +92,6 @@ class Login extends Component {
         const { name, value } = e.target;
 
         this.setState({
-            errors: {},
             [name]: value
         });
     };

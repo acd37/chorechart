@@ -5,11 +5,6 @@ import FamilyTile from '../common/FamilyTile';
 import ChoreTile from '../common/ChoreTile';
 
 const styles = {
-    wrapper: {
-        width: '1200px',
-        maxWidth: '90%',
-        margin: '100px auto'
-    },
     label: {
         marginBottom: '1rem'
     },
@@ -184,11 +179,7 @@ class Main extends Component {
             );
         }
 
-        return (
-            <div style={styles.wrapper}>
-                <div>{message}</div>
-            </div>
-        );
+        return <div>{message}</div>;
     }
 }
 

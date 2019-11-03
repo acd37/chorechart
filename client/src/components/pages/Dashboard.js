@@ -5,6 +5,14 @@ import Navbar from '../layout/Navbar';
 import Settings from '../dashboard/Settings';
 import Main from '../dashboard/Main';
 
+const styles = {
+    wrapper: {
+        width: '1200px',
+        maxWidth: '90%',
+        margin: '50px auto'
+    }
+};
+
 class Dashboard extends Component {
     state = {
         user: {}
@@ -31,12 +39,14 @@ class Dashboard extends Component {
         return (
             <div>
                 <Navbar />
-                <Route exact path='/dashboard' component={() => <Main user={user} />} />
-                <Route
-                    exact
-                    path='/dashboard/settings'
-                    component={() => <Settings user={user} />}
-                />
+                <div style={styles.wrapper}>
+                    <Route exact path='/dashboard' component={() => <Main user={user} />} />
+                    <Route
+                        exact
+                        path='/dashboard/settings'
+                        component={() => <Settings user={user} />}
+                    />
+                </div>
             </div>
         );
     }
