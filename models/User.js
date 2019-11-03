@@ -28,6 +28,9 @@ module.exports = function(sequelize, Sequelize) {
         chorePoints: {
             type: Sequelize.INTEGER,
             defaultValue: 0
+        },
+        thumbnail: {
+            type: Sequelize.STRING
         }
     });
 
