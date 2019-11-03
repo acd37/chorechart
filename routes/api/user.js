@@ -2,6 +2,7 @@ module.exports = function(app) {
     const bcrypt = require('bcryptjs');
     const db = require('../../models');
     const passport = require('passport');
+    const gravatar = require('gravatar');
 
     // @route GET api/users/test
     // @desc tests the users api route
@@ -43,11 +44,18 @@ module.exports = function(app) {
                         email: 'This email already exists. Cannot create account.'
                     });
                 } else {
+                    const thumbnail = gravatar.url(req.body.email, {
+                        s: '200',
+                        r: 'pg',
+                        d: 'mm'
+                    });
+
                     const newUser = {
                         firstName: req.body.firstName,
                         lastName: req.body.lastName,
                         email: req.body.email,
-                        password: req.body.password
+                        password: req.body.password,
+                        thumbnail
                     };
 
                     bcrypt.genSalt(10, (err, salt) => {
