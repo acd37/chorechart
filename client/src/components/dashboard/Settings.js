@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import { Header, Form, Message } from 'semantic-ui-react';
 import CustomButton from '../common/CustomButton';
 import axios from 'axios';
+import validateUpdatedPassword from '../../utils/validateUpdatedPassword';
 
 const styles = {
-    formWrapper: {
-        width: 800,
-        maxWidth: '90%',
-        margin: '0 auto'
+    profileForm: {
+        width: 600,
+        marginTop: 50,
+        maxWidth: '100%'
+    },
+    passwordForm: {
+        width: 400,
+        marginTop: 50,
+        maxWidth: '100%'
     }
 };
 class Settings extends Component {
@@ -17,8 +23,11 @@ class Settings extends Component {
         lastName: this.props.user.lastName,
         email: this.props.user.email,
         familyId: this.props.user.familyId,
+        currentPassword: '',
+        newPassword: '',
+        confirmNewPassword: '',
         errors: {},
-        message: ''
+        messages: {}
     };
 
     handleUpdateProfile = (e) => {
@@ -52,12 +61,12 @@ class Settings extends Component {
             .put('/api/users', updatedUser)
             .then((res) => {
                 this.setState({
-                    message: res.data.message
+                    messages: res.data.messages
                 });
 
                 window.setTimeout(() => {
                     this.setState({
-                        message: ''
+                        messages: {}
                     });
                 }, 3000);
             })
@@ -68,6 +77,52 @@ class Settings extends Component {
                 }
 
                 this.setState({ errors });
+            });
+    };
+
+    handleUpdatePassword = (e) => {
+        e.preventDefault();
+
+        const passwordData = {
+            currentPassword: this.state.currentPassword,
+            newPassword: this.state.newPassword,
+            confirmNewPassword: this.state.confirmNewPassword
+        };
+
+        const { errors, isValid } = validateUpdatedPassword(passwordData);
+
+        if (!isValid) {
+            return this.setState({
+                errors
+            });
+        }
+
+        axios
+            .put('/api/user/password', passwordData)
+            .then((res) => {
+                this.setState({
+                    messages: res.data.messages,
+                    currentPassword: '',
+                    newPassword: '',
+                    confirmNewPassword: ''
+                });
+
+                window.setTimeout(() => {
+                    this.setState({
+                        messages: {}
+                    });
+                }, 3000);
+            })
+            .catch((err) => {
+                this.setState({
+                    errors: err.response.data
+                });
+
+                window.setTimeout(() => {
+                    this.setState({
+                        errors: {}
+                    });
+                }, 3000);
             });
     };
 
@@ -86,9 +141,12 @@ class Settings extends Component {
                 <Header textAlign={'center'} as='h1'>
                     Account Settings
                 </Header>
-                <div style={styles.formWrapper}>
-                    {this.state.message && (
-                        <Message positive icon='check' content={this.state.message} />
+                <div style={styles.profileForm}>
+                    <Header textAlign={'left'} as='h2'>
+                        Profile
+                    </Header>
+                    {this.state.messages.user && (
+                        <Message positive icon='check' content={this.state.messages.user} />
                     )}
                     <Form onSubmit={this.handleUpdateProfile}>
                         <Form.Input
@@ -126,6 +184,52 @@ class Settings extends Component {
 
                         <CustomButton fluid style='primary' type='submit'>
                             Submit
+                        </CustomButton>
+                    </Form>
+                </div>
+                <div style={styles.passwordForm}>
+                    <Header textAlign={'left'} as='h2'>
+                        Update Password
+                    </Header>
+                    {this.state.messages.password && (
+                        <Message positive icon='check' content={this.state.messages.password} />
+                    )}
+                    {this.state.errors.password && (
+                        <Message negative icon='check' content={this.state.errors.password} />
+                    )}
+                    <Form onSubmit={this.handleUpdatePassword}>
+                        <Form.Input
+                            fluid
+                            label='Current password'
+                            name='currentPassword'
+                            value={this.state.currentPassword}
+                            onChange={this.handleChange}
+                            placeholder='Current password'
+                            type='password'
+                            error={this.state.errors.currentPassword}
+                        />
+                        <Form.Input
+                            fluid
+                            label='New password'
+                            name='newPassword'
+                            value={this.state.newPassword}
+                            onChange={this.handleChange}
+                            placeholder='New password'
+                            type='password'
+                            error={this.state.errors.newPassword}
+                        />
+                        <Form.Input
+                            fluid
+                            label='Confirm new password'
+                            name='confirmNewPassword'
+                            value={this.state.confirmNewPassword}
+                            onChange={this.handleChange}
+                            placeholder='Confirm new password'
+                            type='password'
+                            error={this.state.errors.confirmNewPassword}
+                        />
+                        <CustomButton fluid style='primary' type='submit'>
+                            Update
                         </CustomButton>
                     </Form>
                 </div>

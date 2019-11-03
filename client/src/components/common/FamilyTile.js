@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Header } from 'semantic-ui-react';
 import axios from 'axios';
 import Loading from '../common/Loading';
+import User from '../users/User';
 
 const styles = {
     data: {
@@ -41,7 +42,12 @@ class FamilyTile extends Component {
                 {this.state.loading ? (
                     <Loading />
                 ) : (
-                    <div style={styles.data}>{JSON.stringify(this.state.family.users)}</div>
+                    <div style={styles.data}>
+                        {this.state.family.users.map((user) => (
+                            <User user={user} />
+                        ))}
+                        {/* {JSON.stringify(this.state.family.users)} */}
+                    </div>
                 )}
             </div>
         );

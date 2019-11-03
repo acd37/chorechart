@@ -122,7 +122,9 @@ module.exports = function(app) {
                             firstName: data.firstName,
                             lastName: data.lastName,
                             email: data.email,
-                            message: 'User account successfully updated.',
+                            messages: {
+                                user: 'User account successfully updated.'
+                            },
                             userUpdated: true
                         });
                     })
@@ -130,5 +132,78 @@ module.exports = function(app) {
                         res.status(500).json(err);
                     });
             });
+    });
+
+    // @route POST api/users/login
+    // @desc logs in a user
+    app.put('/api/user/password', passport.authenticate('jwt', { session: false }), (req, res) => {
+        const { currentPassword, newPassword } = req.body;
+
+        // Find user by email
+        db.user.findOne({ where: { id: req.user.id } }).then((user) => {
+            // Check the user exists
+            if (!user) {
+                return res.status(404).json({ email: 'User not found.' });
+            }
+
+            let currentUser = user.get();
+            // Check the user entered the right currentPassword
+            bcrypt
+                .compare(currentPassword, currentUser.password)
+                .then((isMatch) => {
+                    if (isMatch) {
+                        // Check the password
+                        bcrypt.compare(newPassword, currentUser.password).then((isMatch) => {
+                            if (isMatch) {
+                                return res.status(404).json({
+                                    password:
+                                        'Your new password cannot be the same as your current password.'
+                                });
+                            }
+
+                            bcrypt.genSalt(10, (err, salt) => {
+                                bcrypt.hash(newPassword, salt, (err, hash) => {
+                                    if (err) throw err;
+
+                                    db.user
+                                        .update(
+                                            {
+                                                password: hash
+                                            },
+                                            {
+                                                where: {
+                                                    id: req.user.id
+                                                }
+                                            }
+                                        )
+                                        .then(() => {
+                                            db.user
+                                                .findByPk(req.user.id)
+                                                .then((data) => {
+                                                    res.status(200).json({
+                                                        messages: {
+                                                            password:
+                                                                'Password successfully updated.'
+                                                        },
+                                                        userUpdated: true
+                                                    });
+                                                })
+                                                .catch((err) => {
+                                                    res.status(500).json(err);
+                                                });
+                                        });
+                                });
+                            });
+                        });
+                    } else {
+                        res.status(404).json({
+                            password: 'Your current password could not be validated. '
+                        });
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        });
     });
 };
