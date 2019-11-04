@@ -5,6 +5,10 @@ import jwtDecode from 'jwt-decode';
 import setAuthToken from '../common/setAuthToken';
 import axios from 'axios';
 
+import { connect } from 'react-redux';
+import { loginUser } from '../../actions/userActions';
+import PropTypes from 'prop-types'
+
 import CustomButton from '../common/CustomButton';
 import CustomCard from '../common/CustomCard';
 
@@ -34,14 +38,30 @@ const styles = {
 };
 
 class Login extends Component {
-    state = {
-        isAuthenticated: false,
-        userID: '',
-        email: '',
-        password: '',
-        redirect: false,
-        errors: {}
-    };
+    // state = {
+    //     isAuthenticated: false,
+    //     userID: '',
+    //     email: '',
+    //     password: '',
+    //     redirect: false,
+    //     errors: {}
+    // };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isAuthenticated: false,
+            userID: '',
+            email: '',
+            password: '',
+            redirect: false,
+            errors: {}
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
+    }
 
     componentDidMount() {
         // Persistent Login
@@ -82,37 +102,39 @@ class Login extends Component {
             password: password
         };
 
+        this.props.loginUser(user);
+
         // axios call to log in user
-        axios
-            .post('/api/auth/login', user)
-            .then((res) => {
-                console.log(res);
+        // axios
+        //     .post('/api/auth/login', user)
+        //     .then((res) => {
+        //         console.log(res);
 
-                if (res.data.token) {
-                    localStorage.setItem('chorechart', res.data.token);
-                    setAuthToken(localStorage.chorechart);
+        //         if (res.data.token) {
+        //             localStorage.setItem('chorechart', res.data.token);
+        //             setAuthToken(localStorage.chorechart);
 
-                    this.setState({
-                        userID: res.data.id,
-                        isAuthenticated: true
-                    });
-                }
-            })
-            .catch((err) => {
-                const errors = {};
+        //             this.setState({
+        //                 userID: res.data.id,
+        //                 isAuthenticated: true
+        //             });
+        //         }
+        //     })
+        //     .catch((err) => {
+        //         const errors = {};
 
-                if (err.response.data.email) {
-                    errors.email = err.response.data.email;
-                }
+        //         if (err.response.data.email) {
+        //             errors.email = err.response.data.email;
+        //         }
 
-                if (err.response.data.password) {
-                    errors.password = err.response.data.password;
-                }
+        //         if (err.response.data.password) {
+        //             errors.password = err.response.data.password;
+        //         }
 
-                this.setState({ errors });
+        //         this.setState({ errors });
 
-                console.log(err.response.data);
-            });
+        //         console.log(err.response.data);
+        //     });
     };
 
     handleChange = (e) => {
@@ -197,4 +219,9 @@ class Login extends Component {
     }
 }
 
-export default Login;
+Login.propTypes = {
+    loginUser: PropTypes.func.isRequired,
+    user: PropTypes.object
+}
+
+export default connect(null, { loginUser })(Login);
