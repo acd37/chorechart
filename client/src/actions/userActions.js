@@ -5,20 +5,24 @@ import axios from 'axios';
 export const loginUser = (userData) => dispatch => {
     axios
     .post('/api/auth/login', userData)
-    .then((res) => {
-        if (res.data.token) {
-            localStorage.setItem('chorechart', res.data.token);
-            setAuthToken(localStorage.chorechart);
+    // .then((res) => {
+    //     if (res.data.token) {
+    //         localStorage.setItem('chorechart', res.data.token);
+    //         setAuthToken(localStorage.chorechart);
 
-            this.setState({
-                userID: res.data.id,
-                isAuthenticated: true
-            });
-        }
-    })
+    //         // this.setState({
+    //         //     userID: res.data.id,
+    //         //     isAuthenticated: true
+    //         // });
+    //     }
+    // })
     .then(user => dispatch({
         type: LOGIN,
-        payload: user
+        payload: {
+            user: user.data,
+            userID: user.data.id,
+            isAuthenticated: true
+        }
     }));
     // .catch((err) => {
     //     const errors = {};

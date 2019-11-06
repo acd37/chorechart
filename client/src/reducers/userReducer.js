@@ -1,7 +1,7 @@
 import { LOGIN, LOGOUT, REGISTER, UPDATE_PROFILE, NEW_FAMILY, JOIN_FAMILY } from "../actions/types";
 
 const initialState = {
-    user: {}
+
 }
 
 export default function(state = initialState, action) {
@@ -36,5 +36,7 @@ export default function(state = initialState, action) {
                 ...state,
                 user: action.payload
             };
+        default:
+            return state;
     }
 }
