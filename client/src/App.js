@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 
 import setAuthToken from './components/common/setAuthToken';
 import PrivateRoute from './components/common/PrivateRoute';
@@ -32,4 +32,8 @@ class App extends Component {
     }
 }
 
-export default App;
+export default connect(
+    state => ({
+      errors: state.errors,
+    })
+  )(App);

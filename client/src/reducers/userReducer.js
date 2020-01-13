@@ -1,7 +1,8 @@
-import { LOGIN, LOGOUT, REGISTER, UPDATE_PROFILE, NEW_FAMILY, JOIN_FAMILY } from "../actions/types";
+import { LOGIN, LOGIN_ERROR, LOGOUT, REGISTER, UPDATE_PROFILE, NEW_FAMILY, JOIN_FAMILY } from "../actions/types";
 
 const initialState = {
-
+    user: {},
+    errors: null    
 }
 
 export default function(state = initialState, action) {
@@ -10,6 +11,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 user: action.payload
+            };
+        case LOGIN_ERROR:
+            return {
+                ...state,
+                err: "There was an error."
             };
         case LOGOUT:
             return {

@@ -38,14 +38,6 @@ const styles = {
 };
 
 class Login extends Component {
-    // state = {
-    //     isAuthenticated: false,
-    //     userID: '',
-    //     email: '',
-    //     password: '',
-    //     redirect: false,
-    //     errors: {}
-    // };
 
     constructor(props) {
         super(props);
@@ -103,38 +95,6 @@ class Login extends Component {
         };
 
         this.props.loginUser(user);
-
-        // axios call to log in user
-        // axios
-        //     .post('/api/auth/login', user)
-        //     .then((res) => {
-        //         console.log(res);
-
-        //         if (res.data.token) {
-        //             localStorage.setItem('chorechart', res.data.token);
-        //             setAuthToken(localStorage.chorechart);
-
-        //             this.setState({
-        //                 userID: res.data.id,
-        //                 isAuthenticated: true
-        //             });
-        //         }
-        //     })
-        //     .catch((err) => {
-        //         const errors = {};
-
-        //         if (err.response.data.email) {
-        //             errors.email = err.response.data.email;
-        //         }
-
-        //         if (err.response.data.password) {
-        //             errors.password = err.response.data.password;
-        //         }
-
-        //         this.setState({ errors });
-
-        //         console.log(err.response.data);
-        //     });
     };
 
     handleChange = (e) => {
@@ -163,6 +123,7 @@ class Login extends Component {
 
         return (
             <div style={styles.layout}>
+                {this.state.error && <h1>{this.state.error}</h1>}
                 <div style={styles.wrapper}>
                     <CustomCard>
                         <img
