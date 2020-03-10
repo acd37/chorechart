@@ -97,6 +97,13 @@ class Login extends Component {
         this.props.loginUser(user);
     };
 
+    static getDerivedStateFromProps(nextProps, prevState){
+        if (nextProps.user.user.isAuthenticated !== prevState.isAuthenticated) {
+          return { isAuthenticated: nextProps.user.user.isAuthenticated };
+       }
+       else return null;
+     }
+
     handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -185,4 +192,8 @@ Login.propTypes = {
     user: PropTypes.object
 }
 
-export default connect(null, { loginUser })(Login);
+const mapStateToProps = state => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps, { loginUser })(Login);

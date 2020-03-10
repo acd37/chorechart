@@ -9,40 +9,33 @@ export const loginUser = (userData) => dispatch => {
         if (res.data.token) {
             localStorage.setItem('chorechart', res.data.token);
             setAuthToken(localStorage.chorechart);
+            dispatch({
+                type: LOGIN,
+                payload: {
+                    user: res.data,
+                    userID: res.data.id,
+                    isAuthenticated: true
+                }
+            })
         }
-        console.log(res.data)
     })
-    .then(user => dispatch({
-        type: LOGIN,
-        payload: {
-            user: user,
-            userID: user.data.id,
-            isAuthenticated: true
-        }
-    }))
-    .catch((err) => dispatch ({
+    .catch((err) => dispatch({
         type: LOGIN_ERROR,
         payload: {
             error: err
         }
     }))
-    // .catch((err) => {
-    //     const errors = {};
-
-    //     if (err.response.data.email) {
-    //         errors.email = err.response.data.email;
-    //     }
-
-    //     if (err.response.data.password) {
-    //         errors.password = err.response.data.password;
-    //     }
-
-    //     this.setState({ errors });
-    // });
 }
 
 export const logoutUser = () => dispatch => {
-    // logout code here
+    localStorage.removeItem('chorechart');
+
+    dispatch({
+        type: LOGOUT,
+        payload: {
+            redirect: true
+        }
+    })
 }
 
 export const registerUser = () => dispatch => {

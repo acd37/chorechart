@@ -18,9 +18,9 @@ class Dashboard extends Component {
         user: {}
     };
 
-    componentDidMount() {
-        this.handleGetUser();
-    }
+    // componentDidMount() {
+    //     this.handleGetUser();
+    // }
 
     handleGetUser = () => {
         axios
