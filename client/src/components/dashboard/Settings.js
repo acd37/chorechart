@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Form, Message } from 'semantic-ui-react';
+import { Header, Form, Message, Icon, Input } from 'semantic-ui-react';
 import CustomButton from '../common/CustomButton';
 import axios from 'axios';
 import validateUpdatedPassword from '../../utils/validateUpdatedPassword';
@@ -11,11 +11,18 @@ const styles = {
         maxWidth: '100%'
     },
     passwordForm: {
+        display: "inline-block",
         width: 400,
         marginTop: 50,
         maxWidth: '100%'
+    },
+    avatarForm: {
+        display: "inline-block",
+        width: 400,
+        marginLeft: 50
     }
 };
+
 class Settings extends Component {
     state = {
         user: {},
@@ -27,7 +34,8 @@ class Settings extends Component {
         newPassword: '',
         confirmNewPassword: '',
         errors: {},
-        messages: {}
+        messages: {},
+        file: {}
     };
 
     handleUpdateProfile = (e) => {
@@ -125,6 +133,18 @@ class Settings extends Component {
                 }, 3000);
             });
     };
+
+    handleUpdateAvatar = (e) => {
+
+    }
+
+    fileInputRef = React.createRef();
+
+    fileChange = e => {
+        this.setState({ file: e.target.files[0] }, () => {
+          console.log("File chosen --->", this.state.file);
+        });
+      };
 
     handleChange = (e) => {
         const { name, value } = e.target;
@@ -230,6 +250,25 @@ class Settings extends Component {
                         />
                         <CustomButton fluid style='primary' type='submit'>
                             Update
+                        </CustomButton>
+                    </Form>
+                </div>
+                <div style={styles.avatarForm}>
+                    <Form onSubmit={this.handleUpdateAvatar}>
+                        <Form.Input
+                            fluid
+                            label='Upload Avatar'
+                            name='uploadAvatar'
+                            value={this.state.uploadAvatar}
+                            icon={<Icon name='search' onClick={() => this.fileInputRef.current.click()} inverted circular link />}
+                            onChange={this.handleChange}
+                            placeholder='No Avatar Set'
+                            error={this.state.errors.uploadAvatar}
+                            value={this.state.file.name}
+                        />
+                        <input ref={this.fileInputRef} type="file" onChange={this.fileChange} hidden />                  
+                        <CustomButton fluid style='primary' type='submit'>
+                            Upload
                         </CustomButton>
                     </Form>
                 </div>
