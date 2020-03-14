@@ -12,7 +12,7 @@ const path = require('path');
 app.use(helmet());
 
 // Bodyparser
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Morgan

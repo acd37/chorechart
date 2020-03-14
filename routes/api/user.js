@@ -3,6 +3,9 @@ module.exports = function(app) {
     const db = require('../../models');
     const passport = require('passport');
     const gravatar = require('gravatar');
+    const multer = require('multer');
+    const upload = multer({ dest: './uploads/' });
+    const fs = require('fs');
 
     // @route GET api/users/test
     // @desc tests the users api route
@@ -13,7 +16,7 @@ module.exports = function(app) {
         });
     });
 
-    // @route  GET api/users/current
+    // @route GET api/users/current
     // @desc gets the currently authenticated user
     app.get('/api/user/current', passport.authenticate('jwt', { session: false }), (req, res) => {
         db.user
@@ -134,7 +137,7 @@ module.exports = function(app) {
             });
     });
 
-    // @route POST api/users/login
+    // @route PUT api/users/password
     // @desc logs in a user
     app.put('/api/user/password', passport.authenticate('jwt', { session: false }), (req, res) => {
         const { currentPassword, newPassword } = req.body;
@@ -205,5 +208,29 @@ module.exports = function(app) {
                     console.log(err);
                 });
         });
+    });
+
+    // @route PUT api/users/avatar
+    // @desc sets user avatar file
+    app.put('/api/user/avatar', passport.authenticate('jwt', { session: false }), upload.single("avatarFile"), (req, res) => {       
+        
+        let extension = "";
+
+        switch(req.file.mimetype) {
+            case "image/jpeg":
+                extension = ".jpeg";
+                break;
+            case "image/png":
+                extension = ".png";
+                break;
+        }
+
+        fs.rename(`./uploads/${req.file.filename}`, `./uploads/${req.user.id}${extension}`, () => {
+            console.log(`${req.file.filename} renamed to ${req.user.id}${extension}`)
+        })
+
+        res.status(200).json({
+            msg: "Avatar saved."
+        })
     });
 };
