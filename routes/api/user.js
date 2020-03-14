@@ -226,11 +226,35 @@ module.exports = function(app) {
         }
 
         fs.rename(`./uploads/${req.file.filename}`, `./uploads/${req.user.id}${extension}`, () => {
-            console.log(`${req.file.filename} renamed to ${req.user.id}${extension}`)
-        })
-
-        res.status(200).json({
-            msg: "Avatar saved."
+            filename = `${req.user.id}${extension}`;
+        
+            db.user
+                .update(
+                    {
+                        thumbnail: filename,
+                    },
+                    {
+                        where: {
+                            id: req.user.id
+                        }
+                    }
+                )
+                .then(() => {
+                    db.user
+                        .findByPk(req.user.id)
+                        .then((data) => {
+                            res.status(200).json({
+                                avatar: data.thumbnail,
+                                messages: {
+                                    user: 'User avatar successfully updated.'
+                                },
+                                userUpdated: true
+                            });
+                        })
+                        .catch((err) => {
+                            res.status(500).json(err);
+                        });
+                });
         })
     });
 };
